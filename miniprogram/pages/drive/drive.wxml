@@ -1,0 +1,61 @@
+<view class="detail-page">
+  <view class="map-area">
+    <map wx:if="{{mapVisible}}" id="drive-map" class="route-map" latitude="{{latitude}}" longitude="{{longitude}}" scale="{{scale}}" markers="{{markers}}" polyline="{{polyline}}" subkey="{{mapSubkey}}" layer-style="{{mapLayerStyle}}" show-location="{{false}}" enable-scroll="{{!sheet}}" enable-zoom="{{!sheet}}" show-scale="{{true}}" enable-poi="{{false}}" enable-building="{{false}}" enable-3D="{{false}}" enable-traffic="{{false}}" bindabilityfail="mapStyleFailed" bindabilitysuccess="mapStyleReady" binderror="mapFailed" />
+    <view wx:if="{{!mapVisible && hasSummary}}" class="map-message">
+      <view>{{notice}}</view>
+      <view class="map-caption">已记录的行程概况仍可查看</view>
+      <button wx:if="{{status === 'pending' || status === 'failed'}}" bindtap="load" loading="{{busy}}" disabled="{{busy}}" class="retry-button">{{status === 'pending' ? '刷新状态' : '重试轨迹'}}</button>
+    </view>
+    <view wx:if="{{!hasSummary}}" class="initial-state">
+      <view>{{error || '正在读取行程与轨迹…'}}</view>
+      <button wx:if="{{error}}" bindtap="load" loading="{{busy}}" disabled="{{busy}}" class="retry-button">重试</button>
+    </view>
+    <view wx:if="{{hasSummary}}" class="overview-card">
+      <view class="overview-inner">
+        <view class="summary-heading">
+          <view class="summary-main">
+            <view class="overview-address" bindtap="showAddress" role="button" aria-label="查看完整起终点名称">{{overview.start}} → {{overview.end}}</view>
+            <view class="overview-time">{{overview.time}}</view>
+          </view>
+          <view class="summary-temperatures">
+            <view>车外 {{overview.outsideTemperature}}</view>
+            <view>车内 {{overview.insideTemperature}}</view>
+            <view class="temperature-caption">平均温度</view>
+          </view>
+        </view>
+        <view class="core-metrics">
+          <view><text class="core-value">{{overview.distance}}</text><text wx:if="{{overview.distance !== '未记录'}}" class="core-unit"> km</text></view>
+          <view class="duration-value">{{overview.duration}}</view>
+        </view>
+        <view class="summary-lines" bindtap="showEnergyInfo" role="button" aria-label="查看能耗估算及车速说明">
+          <view class="summary-line">消耗电量 <text class="summary-value">{{overview.energyUsed === '未记录' ? '暂无数据' : '≈' + overview.energyUsed}}</text>，平均能耗 <text class="summary-value">{{overview.averageConsumption === '未记录' ? '暂无数据' : '≈' + overview.averageConsumption}}</text></view>
+          <view class="summary-line">续航 <text class="summary-value">{{overview.rangeSummary}}</text>，最大/平均车速 <text class="summary-value">{{overview.maximumSpeedNumber}} / {{overview.averageSpeed}}</text></view>
+        </view>
+        <view wx:if="{{notice !== '轨迹来自车辆采集'}}" class="route-notice {{status !== 'ready' ? 'route-warning' : ''}}">{{notice}}</view>
+        <view wx:if="{{drawing}}" class="data-note">正在绘制轨迹…</view>
+        <view wx:if="{{mapStyleError}}" class="route-warning">地图样式暂未加载，请重试</view>
+        <button wx:if="{{mapStyleError}}" class="retry-button" bindtap="retryMap">重试地图</button>
+        <view wx:if="{{error}}" class="route-warning">{{error}}</view>
+      </view>
+    </view>
+    <view wx:if="{{mapVisible}}" class="map-controls">
+      <button data-delta="1" bindtap="zoom" aria-label="放大地图">＋</button>
+      <button data-delta="-1" bindtap="zoom" aria-label="缩小地图">−</button>
+      <button bindtap="fit" class="fit-button">全程</button>
+    </view>
+    <view wx:if="{{mapError}}" class="map-error"><text>地图加载失败</text><button class="retry-button" bindtap="retryMap">重试地图</button></view>
+    <view class="bottom-actions" wx:if="{{hasSummary}}"><button bindtap="showDay" class="day-button">查看本日行程</button></view>
+  </view>
+  <view wx:if="{{sheet}}" class="day-mask" bindtap="closeDay">
+    <view class="day-sheet" catchtap="noop">
+      <view class="sheet-heading"><text>{{overview.dayTitle}}的行程</text><button bindtap="closeDay" aria-label="关闭本日行程">×</button></view>
+      <scroll-view scroll-y class="day-scroll">
+        <view wx:for="{{dayRows}}" wx:key="id" class="day-trip {{item.current ? 'current-trip' : ''}}" bindtap="selectDrive" data-id="{{item.id}}" role="button">
+          <view class="trip-time">{{item.time}}<text wx:if="{{item.current}}" class="current-label">当前行程</text></view>
+          <view class="trip-address">起 · {{item.start}}</view><view class="trip-address">终 · {{item.end}}</view>
+          <view class="trip-metrics">{{item.distance}} · {{item.duration}}</view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+</view>

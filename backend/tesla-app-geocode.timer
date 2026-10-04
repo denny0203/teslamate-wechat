@@ -1,0 +1,11 @@
+[Unit]
+Description=Check missing drive addresses every five minutes
+
+[Timer]
+OnBootSec=90s
+OnUnitInactiveSec=5min
+Persistent=true
+Unit=tesla-app-geocode.service
+
+[Install]
+WantedBy=timers.target

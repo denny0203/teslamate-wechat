@@ -1,0 +1,5 @@
+{
+  "url": "https://your-project.example.com",
+  "service_role_key": "REPLACE_WITH_LEGACY_SERVICE_ROLE_JWT",
+  "owner_id": "REPLACE_WITH_AUTH_USER_UUID"
+}

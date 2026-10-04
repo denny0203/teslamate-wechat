@@ -1,0 +1,19 @@
+[Unit]
+Description=Read TeslaMate recent drives and sync private Supabase app tables
+After=network-online.target docker.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=root
+UMask=0077
+ExecStart=/usr/bin/python3 /opt/teslamate-app/sync_drives.py
+ExecStart=/usr/bin/python3 /opt/teslamate-app/sync_details.py
+ExecStart=/usr/bin/python3 /opt/teslamate-app/sync_vehicles.py
+TimeoutStartSec=300
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/teslamate-app
+

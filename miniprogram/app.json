@@ -1,0 +1,43 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/trips/trips",
+    "pages/footprints/footprints",
+    "pages/drive/drive"
+  ],
+  "window": {
+    "navigationBarTitleText": "这只喵又出发了",
+    "navigationBarBackgroundColor": "#090a0c",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#090a0c",
+    "enablePullDownRefresh": true
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "tabBar": {
+    "color": "#999da8",
+    "selectedColor": "#7798ff",
+    "backgroundColor": "#090a0c",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "爱车",
+        "iconPath": "assets/tab-car.png",
+        "selectedIconPath": "assets/tab-car-active.png"
+      },
+      {
+        "pagePath": "pages/trips/trips",
+        "text": "行程",
+        "iconPath": "assets/tab-trips.png",
+        "selectedIconPath": "assets/tab-trips-active.png"
+      },
+      {
+        "pagePath": "pages/footprints/footprints",
+        "text": "足迹",
+        "iconPath": "assets/tab-footprints.png",
+        "selectedIconPath": "assets/tab-footprints-active.png"
+      }
+    ]
+  }
+}

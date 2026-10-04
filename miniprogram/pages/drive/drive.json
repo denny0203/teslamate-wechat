@@ -1,0 +1,10 @@
+{
+ "navigationBarTitleText":"行程详情",
+ "navigationBarBackgroundColor":"#202737",
+ "navigationBarTextStyle":"white",
+ "backgroundColor":"#202737",
+ "backgroundTextStyle":"light",
+ "enablePullDownRefresh":true,
+ "disableScroll":true,
+ "usingComponents":{}
+}

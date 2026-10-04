@@ -1,0 +1,18 @@
+<view class="page home-page">
+<view wx:if="{{!loggedIn}}" class="title">爱车</view>
+<view wx:if="{{!configured}}" class="card">服务尚未配置</view>
+<view wx:elif="{{!loggedIn}}" class="card"><view class="subtitle">登录查看爱车</view><input placeholder="邮箱账号" value="{{email}}" bindinput="onEmail"/><input placeholder="密码" password value="{{password}}" bindinput="onPassword" bindconfirm="login"/><button bindtap="login" loading="{{busy}}" disabled="{{busy}}">登录查看</button></view>
+<block wx:else>
+<view wx:if="{{busy && !loaded}}" class="empty">正在读取爱车信息…</view>
+<block wx:if="{{vehicle}}">
+<view class="home-header"><view><view class="vehicle-name" bindtap="confirmLogout">{{vehicle.name}}</view><view class="muted">{{vehicle.model}}</view></view><view class="state"><text class="state-dot"/>{{vehicle.state}}</view></view>
+<view class="vehicle-panel"><image class="car-art" src="/assets/car.png" mode="aspectFit"/>
+<view class="range-row"><view><view class="label">剩余续航</view><text class="range-value">{{vehicle.range}}</text><text class="unit"> km</text></view><view class="battery-block"><view class="label">电量</view><text class="battery-value">{{vehicle.battery}}</text><text class="unit"> %</text></view></view>
+<view class="battery-track"><view style="width:{{vehicle.battery === '—' ? 0 : vehicle.battery}}%"/></view>
+<view class="estimate" bindtap="estimateInfo"><text>预估可行驶距离</text><text>{{vehicle.estimate}} <text class="chevron">›</text></text></view>
+<view class="temperature"><text>车外 {{vehicle.outside}}</text><text>车内 {{vehicle.inside}}</text></view>
+</view>
+<view class="info-card charge-card" bindtap="chargeInfo"><view class="row-between"><text class="section-label">最近一次充电</text><text class="chevron">›</text></view><view wx:if="{{vehicle.charge}}" class="charge-summary"><text>{{vehicle.charge.energy}}</text><text class="charge-battery">电量 {{vehicle.charge.battery}}</text></view><view wx:else class="muted">暂无已结束充电记录</view></view>
+<view class="info-card recent-card" wx:if="{{vehicle.latest}}" bindtap="openDrive" data-id="{{vehicle.latest.id}}"><view class="row-between"><text class="section-label">最近用车</text><text class="date">{{vehicle.latest.day}} <text class="chevron">›</text></text></view><view class="trip-metrics"><view><view class="metric-label">行驶里程</view><text class="metric-value">{{vehicle.latest.distance}}</text><text class="unit"> km</text></view><view class="trip-duration"><view class="metric-label">行驶时长</view>{{vehicle.latest.duration}}</view><view class="trip-energy"><view class="metric-label">平均能耗</view>{{vehicle.latest.averageConsumption === '未记录' ? '能耗未记录' : '≈' + vehicle.latest.averageConsumption}}</view></view><view class="address">{{vehicle.latest.start}} → {{vehicle.latest.end}}</view><view class="muted trip-time">{{vehicle.latest.time}}</view></view><view class="info-card" wx:else>暂无已结束行程</view>
+<view class="sample-note">{{busy ? '正在刷新…' : '采集于 ' + vehicle.sampled}}<text wx:if="{{vehicle.stale}}"> · 数据已延迟</text></view>
+</block></block><view wx:if="{{error}}" class="error">{{error}}</view></view>

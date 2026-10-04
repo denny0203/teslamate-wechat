@@ -1,0 +1,19 @@
+{
+  "appid": "touristappid",
+  "projectname": "teslamate-wechat-v1.0",
+  "compileType": "miniprogram",
+  "miniprogramRoot": "./",
+  "setting": {
+    "es6": true,
+    "urlCheck": true,
+    "minified": true
+  },
+  "packOptions": {
+    "ignore": [
+      {
+        "type": "file",
+        "value": "README.md"
+      }
+    ]
+  }
+}
